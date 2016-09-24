@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en-US" ng-app="chatCafe">
+  <head>
+    <meta charset="utf-8">
+    <title>ChatCafé</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="/images/favicon.png">
+  </head>
+  <body>
+    <main ng-cloak>
+      <div class='message-list' ng-controller="historyCtrl">
+        <ul>
+          <li ng-repeat="message in messages | orderBy : '-date'">
+            <span>{{ message.timestamp | date : 'mediumTime' }}</span>
+            <span>{{ message.senderName }}</span>
+            <span>{{ message.senderID }}</span>
+            <span>{{ message.body }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="send-message" ng-controller="messageCtrl">
+        <div class="avatar">
+          <img class="avatar__image" src="">
+          <div class="avatar__name" ng-model="message.senderName"></div>
+        </div>
+        <textarea class="send-message__input" ng-model="message.body"></textarea>
+        <button class="send-message__submit" ng-click="update(message)">
+          <%= require('./client/images/submit_arrow.svg') %>
+        </button>
+      </div>
+    </main>
+  </body>
+</html>
