@@ -40,13 +40,13 @@ const config = {
     }, {
       test: /\.html$/,
       loader: 'html'
-    }]
+    }],
   },
   babel: {
-    presets: ['es2015', 'stage-0']
+    presets: ['es2015', 'stage-0'],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.scss']
+    extensions: ['', '.js', '.jsx', '.scss', '.css'],
   },
   postcss: function () {
     return [precss, autoprefixer];
@@ -68,7 +68,7 @@ const config = {
         '"production"' :
         '"development"'
       ),
-      'SERVER_URL': JSON.stringify(process.env.SERVER_URL)
+      'SERVER_URL': JSON.stringify(process.env.SERVER_URL),
     }),
   ],
 };

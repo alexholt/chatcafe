@@ -11,6 +11,7 @@ const httpConfig = { withCredentials: true };
 
 chatCafe.config(['avatarInfoProvider', function (avatarInfoProvider) {
   avatarInfoProvider.initializeName();
+  avatarInfoProvider.initializeAvatar();
 }]);
 
 chatCafe.controller('historyCtrl', function ($scope, $http) {
@@ -47,6 +48,7 @@ chatCafe.controller('messageCtrl', function ($scope, $http, avatarInfo) {
     $scope.message = angular.copy(message);
     $scope.message.timestamp = Date.now();
     $scope.message.senderName = avatarInfo.getName();
+    $scope.message.avatarUrl = avatarInfo.getAvatarUrl();
 
     $http.post(`${SERVER_URL}/chat`, $scope.message, httpConfig)
       .success(function (data) {
@@ -67,6 +69,7 @@ chatCafe.controller('messageCtrl', function ($scope, $http, avatarInfo) {
 chatCafe.controller('avatarCtrl', function ($scope, avatarInfo) {
   $scope.master = {
     name: avatarInfo.getName(),
+    avatarUrl: avatarInfo.getAvatarUrl(),
   };
 
   $scope.update = function (user) {
@@ -83,7 +86,26 @@ chatCafe.controller('avatarCtrl', function ($scope, avatarInfo) {
 
 chatCafe.provider('avatarInfo', [function () {
   let username = 'Anonymous';
-  let localStorageKey = 'username';
+  let avatarUrl = '';
+  let localStorageNameKey = 'username';
+
+  let buildRandomAvatar = function () {
+    let url = 'http://api.adorable.io/avatars/face/';
+
+    let parts = [ 'eyes', 'noise', 'mouth' ].map( function (part) {
+      return `${part}${Math.floor(Math.random() * 10) + 1}`;
+    }).join('/');
+
+    let color = (function () {
+      var colorValue = '';
+      for (var i = 0; i < 6; i++) {
+        colorValue += Math.floor(Math.random() * 16).toString(16);
+      }
+      return colorValue;
+    })();
+
+    return url + parts + '/' + color;
+  };
 
   let setName = function (name) {
     username = name;
@@ -99,15 +121,22 @@ chatCafe.provider('avatarInfo', [function () {
       getName: function () {
         return username;
       },
-      setName
+      setName,
+      getAvatarUrl: function () {
+        return avatarUrl;
+      }
     };
   }];
 
   this.initializeName = function () {
     try {
-      username = localStorage.getItem(localStorageKey);
+      username = localStorage.getItem(localStorageNameKey);
     } catch (err) {
       console.error(`Local storage is unavailable: ${err.message}`);
     }
+  };
+
+  this.initializeAvatar = function () {
+    avatarUrl = buildRandomAvatar();
   };
 }]);

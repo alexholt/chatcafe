@@ -1,9 +1,14 @@
 @import '~normalize.css';
+@import './palette.scss';
 
 $bottom-tray-height: 50px;
 
 * {
   box-sizing: border-box;
+}
+
+body {
+  background-color: $color5;
 }
 
 main {
@@ -67,15 +72,42 @@ main {
 }
 
 .message-list {
+  background-color: $color4;
   padding: 1em;
   height: calc(100% - #{$bottom-tray-height + 20px});
   overflow: scroll;
 
   ul {
     padding-left: 0;
+    margin: auto;
+    max-width: 960px;
+    margin: auto;
 
-    li {
+    .message-list__item {
+      margin-right: 0;
+      margin-left: 0;
+      margin-top: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed $color2;
       list-style: none;
+
     }
   }
+}
+
+.message {
+    .message__sender-name {
+      text-align: left;
+      color: $color1;
+      font-size: 12px;
+    }
+
+    .message__timestamp {
+      font-size: 8px;
+      text-align: right;
+    }
+
+    .message__body {
+      color: $color2;
+    }
 }

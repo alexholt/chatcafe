@@ -4,20 +4,23 @@
     "body": "Hello, world!",
     "timestamp": 1474737837425,
     "senderId": 0,
-    "id": 0
+    "id": 0,
+    "avatarUrl": "http://api.adorable.io/avatars/face/eyes2/noise8/mouth9/507aab"
   },
   {
     "senderName": "John Locke",
     "body": "Great work on the beach early today. This is just the vacation I wanted.",
     "timestamp": 1474737837455,
     "senderId": 1,
-    "id": 1 
+    "id": 1,
+    "avatarUrl": "http://api.adorable.io/avatars/face/eyes1/noise5/mouth2/f892a1"
   },
   {
     "senderName": "Lisa Ng",
     "body": "Can we talk about what we're having for dinner?",
     "timestamp": 1474737837495,
     "senderId": 2,
-    "id": 2
+    "id": 2,
+    "avatarUrl": "http://api.adorable.io/avatars/face/eyes4/noise3/mouth7/a81211"
   }
 ]

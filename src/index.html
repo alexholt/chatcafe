@@ -5,26 +5,38 @@
     <title>ChatCafé</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" href="/images/favicon.png">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   <body>
     <main ng-cloak>
 
-      <div class='message-list' ng-controller="historyCtrl">
+      <div class="message-list" ng-controller="historyCtrl">
         <ul>
-          <li ng-repeat="message in messages | orderBy : 'timestamp' track by message.id">
-            <span>
-              {{ message.timestamp | date : 'mediumTime' }}
-            </span>
-            <span>{{ message.senderName }}</span>
-            <span>{{ message.senderId }}</span>
-            <span>{{ message.body }}</span>
+          <li class="row message-list__item" ng-repeat="message in messages | orderBy : 'timestamp' track by message.id">
+            <div class="col-xs-1 avatar">
+              <img class="avatar__image" ng-src="{{message.avatarUrl}}">
+            </div>
+            
+            <div class="col-xs-9 message">
+              <div class="row">
+                <span class="col-xs-6 message__sender-name">{{ message.senderName }}</span>
+
+                <span class="col-xs-offset-2 col-xs-4 message__timestamp">
+                  {{ message.timestamp | date : 'mediumTime' }}
+                </span>
+              </div>
+              
+              <div class="row">
+                <span class="col-xs-12 message__body">{{ message.body }}</span>
+              </div>
+            </div>
           </li>
         </ul>
       </div>
 
       <div class="send-message" ng-controller="messageCtrl">
         <div class="avatar" ng-controller="avatarCtrl">
-          <img class="avatar__image" src="http://api.adorable.io/avatars/face/1eyes/nose2/mouth1/ff0"/>
+          <img class="avatar__image" ng-src="{{user.avatarUrl}}">
           <input type="text" ng-blur="update(user)" class="avatar__name" ng-model="user.name">
         </div>
         <textarea class="send-message__input" ng-model="message.body"></textarea>
