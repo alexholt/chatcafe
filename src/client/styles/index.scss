@@ -17,26 +17,34 @@ main {
   position: fixed;
 }
 
+.btn {
+  outline: none !important;
+}
+
 .send-message {
 
   width: 100%;
   bottom: 0;
+  left: 0;
   position: fixed;
   display: flex;
   margin-bottom: 1em;
+  padding-right: 1em;
 
   .send-message__input {
     display: block;
     resize: none;
-    width: 90%;
-    height: $bottom-tray-height;
-    height: 3em;
+    flex-basis: 100%;
+    height: 1.8em;
     margin: auto;
+    outline: none;
+    border-radius: 4px;
   }
 
   .send-message__submit {
     width: 60px;
-    height: $bottom-tray-height;
+    height: 1.8em;
+    margin: auto;
     padding: 0;
     outline: none;
     border: none;
@@ -48,18 +56,43 @@ main {
   }
 
   .avatar {
-    height: $bottom-tray-height;
+    flex-basis: 60px;
+    margin-bottom: -5px;
   }
 }
 
 .avatar {
-  width: $bottom-tray-height + 10px;
+  display: flex;
+  flex-direction: column;
+
+  &.avatar--fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(1, 1, 1, 0.8);
+
+    .avatar__image {
+      width: 200px;
+      height: 200px;
+    }
+
+    .avatar__name {
+      font-size: 20px;
+    }
+
+    .avatar__submit {
+      display: block;
+    }
+  }
 
   .avatar__image {
     display: block;
     margin: auto;
     width: $bottom-tray-height - 10px;
     height: $bottom-tray-height - 10px;
+    border-radius: 4px;
   }
 
   .avatar__name {
@@ -67,7 +100,16 @@ main {
     text-align: center;
     background: transparent;
     border: none;
+    display: block;
+    margin: auto;
     width: $bottom-tray-height + 10px;
+    color: $color1;
+    width: 100%;
+    outline: none;
+  }
+
+  .avatar__submit {
+    display: none;
   }
 }
 
@@ -105,6 +147,7 @@ main {
     .message__timestamp {
       font-size: 8px;
       text-align: right;
+      color: $color1;
     }
 
     .message__body {

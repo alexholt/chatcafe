@@ -29,12 +29,11 @@ chatCafe.controller('historyCtrl', function ($scope, $http) {
             $scope.messages.push(messages[i]);
           }
         }
+        setTimeout(fetchData, FETCH_INTERVAL);
       })
       .error(function (err) {
         console.error(`An error has occured: ${err.message}`);
       });
-
-    setTimeout(fetchData, FETCH_INTERVAL);
   };
 
   setTimeout(fetchData, FETCH_INTERVAL);
@@ -87,7 +86,7 @@ chatCafe.controller('avatarCtrl', function ($scope, avatarInfo) {
 chatCafe.provider('avatarInfo', [function () {
   let username = 'Anonymous';
   let avatarUrl = '';
-  let localStorageNameKey = 'username';
+  const localStorageNameKey = 'username';
 
   let buildRandomAvatar = function () {
     let url = 'http://api.adorable.io/avatars/face/';

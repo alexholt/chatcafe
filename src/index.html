@@ -38,10 +38,14 @@
         <div class="avatar" ng-controller="avatarCtrl">
           <img class="avatar__image" ng-src="{{user.avatarUrl}}">
           <input type="text" ng-blur="update(user)" class="avatar__name" ng-model="user.name">
+          <button class="btn btn-default avatar__submit" ng-click="close()">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+          </button>
         </div>
+
         <textarea class="send-message__input" ng-model="message.body"></textarea>
-        <button class="send-message__submit" ng-click="update(message)">
-          <%= require('./client/images/submit_arrow.svg') %>
+        <button class="btn btn-default send-message__submit" ng-click="update(message)">
+          <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
         </button>
       </div>
 
