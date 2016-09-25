@@ -29,13 +29,18 @@ app.get('/chat', function (req, res) {
 });
 
 app.post('/chat', function (req, res) {
-  let data = req.body;
-  data.senderID = req.session.id;
-  sampleData.push(data);
+  let message = req.body;
+  message.senderId = req.session.id;
+  message.id = sampleData[sampleData.length - 1].id + 1;
+  sampleData.push(message);
   res.status(200);
   res.send();
 });
 
-app.listen(8000, function () {
-  console.log('Listening on 8000');
-});
+if (process.env.NODE_ENV === 'production') {
+  app.listen(80);
+} else {
+  app.listen(8000, function () {
+    console.log('Listening on 8000');
+  });
+}

@@ -9,30 +9,36 @@ const FETCH_INTERVAL = 500;
 
 const httpConfig = { withCredentials: true };
 
+chatCafe.config(['avatarInfoProvider', function (avatarInfoProvider) {
+  avatarInfoProvider.initializeName();
+}]);
+
 chatCafe.controller('historyCtrl', function ($scope, $http) {
-  $scope.master = {};
+  $scope.messages = [];
 
   const fetchData = function () {
     $http.get(`${SERVER_URL}/chat`, httpConfig)
-      .success(function (data) {
-        $scope.messages = data;
-        setTimeout(fetchData, FETCH_INTERVAL);
+      .success(function (messages) {
+        $scope.messages = messages;
       })
       .error(function (err) {
-        $scope.messages = [];
+        console.error(`An error has occured: ${err.message}`);
       });
+
+    setTimeout(fetchData, FETCH_INTERVAL);
   };
 
   setTimeout(fetchData, FETCH_INTERVAL);
 
 });
 
-chatCafe.controller('messageCtrl', function ($scope, $http) {
+chatCafe.controller('messageCtrl', function ($scope, $http, avatarInfo) {
   $scope.master = {};
 
   $scope.update = function (message) {
     $scope.message = angular.copy(message);
     $scope.message.timestamp = Date.now();
+    $scope.message.senderName = avatarInfo.getName();
 
     $http.post(`${SERVER_URL}/chat`, $scope.message, httpConfig)
       .success(function (data) {
@@ -45,7 +51,55 @@ chatCafe.controller('messageCtrl', function ($scope, $http) {
 
   $scope.reset = function () {
     $scope.message = angular.copy($scope.master);
-    $scope.message.senderName = 'Alex';
   };
 
+  $scope.reset();
 });
+
+chatCafe.controller('avatarCtrl', function ($scope, avatarInfo) {
+  $scope.master = {
+    name: avatarInfo.getName(),
+  };
+
+  $scope.update = function (user) {
+    $scope.user = angular.copy(user);
+    avatarInfo.setName($scope.user.name);
+  };
+
+  $scope.reset = function () {
+    $scope.user = angular.copy($scope.master);
+  };
+
+  $scope.reset();
+});
+
+chatCafe.provider('avatarInfo', [function () {
+  let username = 'Anonymous';
+  let localStorageKey = 'username';
+
+  let setName = function (name) {
+    username = name;
+    try {
+      localStorage.setItem('username', username);
+    } catch (err) {
+      console.error(`Local storage is unavailable: ${err.message}`);
+    }
+  };
+
+  this.$get = [function () {
+    return {
+      getName: function () {
+        return username;
+      },
+      setName
+    };
+  }];
+
+  this.initializeName = function () {
+    try {
+      username = localStorage.getItem(localStorageKey);
+    } catch (err) {
+      console.error(`Local storage is unavailable: ${err.message}`);
+    }
+  };
+}]);

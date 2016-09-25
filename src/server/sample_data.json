@@ -3,18 +3,21 @@
     "senderName": "Alex Volt",
     "body": "Hello, world!",
     "timestamp": 1474737837425,
-    "senderID": 0
+    "senderId": 0,
+    "id": 0
   },
   {
     "senderName": "John Locke",
     "body": "Great work on the beach early today. This is just the vacation I wanted.",
     "timestamp": 1474737837455,
-    "senderID": 1
+    "senderId": 1,
+    "id": 1 
   },
   {
     "senderName": "Lisa Ng",
     "body": "Can we talk about what we're having for dinner?",
     "timestamp": 1474737837495,
-    "senderID": 2
+    "senderId": 2,
+    "id": 2
   }
 ]
