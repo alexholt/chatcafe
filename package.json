@@ -6,7 +6,9 @@
   "scripts": {
     "start-client": "SERVER_URL=http://localhost:8000 NODE_ENV=development webpack-dev-server --hot --config webpack.config.js --colors --progress",
     "build": "NODE_ENV=production webpack --config webpack.config.js -p",
-    "start-server": "CLIENT_URL=http://localhost:8080 nodemon src/server/index.js"
+    "start-server": "CLIENT_URL=http://localhost:8080 nodemon src/server/index.js",
+    "start-mongo": "mongod --dbpath=/data",
+    "seed-mongo": "node src/server/seed.js"
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,7 @@
     "express-session": "^1.14.1",
     "html-loader": "^0.4.4",
     "html-webpack-plugin": "^2.22.0",
+    "mongodb": "^2.2.10",
     "node-sass": "^3.10.0",
     "normalize.css": "^4.2.0",
     "postcss": "^5.2.0",

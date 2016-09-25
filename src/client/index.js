@@ -19,7 +19,15 @@ chatCafe.controller('historyCtrl', function ($scope, $http) {
   const fetchData = function () {
     $http.get(`${SERVER_URL}/chat`, httpConfig)
       .success(function (messages) {
-        $scope.messages = messages;
+        const messageIds = $scope.messages.reduce(function (acc, cur) {
+          acc[cur.id] = true;
+          return acc;
+        }, {});
+        for (let i = 0; i < messages.length; i++) {
+          if (!messageIds[messages[i].id]) {
+            $scope.messages.push(messages[i]);
+          }
+        }
       })
       .error(function (err) {
         console.error(`An error has occured: ${err.message}`);
