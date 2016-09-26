@@ -95,11 +95,13 @@ module.exports = {
   getHighestId: function (cb) {
     collection.find({}).sort({id: -1}).limit(1).toArray(
       function (err, docs) {
-        let doc = docs[0];
-        if (err) {
+        let id = 0;
+        if (err && !docs) {
           console.log(`Unable to find highest id: ${err.code} ${err.message}`);
+        } else {
+          id = docs[0];
         }
-        cb(err, doc.id >= Number.MAX_SAFE_INTEGER ? 0 : doc.id);
+        cb(err, id >= Number.MAX_SAFE_INTEGER ? 0 : id);
       }
     );
   },

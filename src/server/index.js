@@ -80,9 +80,8 @@ app.post('/chat', function (req, res) {
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('public'));
-  app.listen(80);
-} else {
-  app.listen(8000, function () {
-    console.log('Listening on 8000');
-  });
 }
+
+app.listen(8000, function () {
+  console.log('Listening on 8000');
+});
