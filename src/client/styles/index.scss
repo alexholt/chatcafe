@@ -80,10 +80,18 @@ main {
 
     .avatar__name {
       font-size: 20px;
+      background: black;
+      border: 1px solid $color1;
+      width: 75%; // Match the size of the submit button
+      max-width: 400px;
     }
 
     .avatar__submit {
       display: block;
+      margin-bottom: 50px;
+      width: 75%;
+      max-width: 400px;
+      margin: auto;
     }
   }
 

@@ -58,6 +58,13 @@ chatCafe.controller('messageCtrl', function ($scope, $http, avatarInfo) {
       });
   };
 
+  $scope.keydown = function (message) {
+    console.log($event.keyCode);
+    if ($event.keyCode === 23) {
+      $scope.update(message); 
+    }
+  };
+
   $scope.reset = function () {
     $scope.message = angular.copy($scope.master);
   };
@@ -71,9 +78,23 @@ chatCafe.controller('avatarCtrl', function ($scope, avatarInfo) {
     avatarUrl: avatarInfo.getAvatarUrl(),
   };
 
+  if ($scope.master.name === '') {
+    $scope.avatarModifier = 'avatar--fullscreen';
+  }
+
   $scope.update = function (user) {
+    if (/$\s*^/.test(user.name)) {
+      // Reject names that are all whitespace
+      $scope.reset();
+      return;
+    }
+    $scope.avatarModifier = '';
     $scope.user = angular.copy(user);
     avatarInfo.setName($scope.user.name);
+  };
+
+  $scope.close = function () {
+
   };
 
   $scope.reset = function () {
@@ -84,9 +105,10 @@ chatCafe.controller('avatarCtrl', function ($scope, avatarInfo) {
 });
 
 chatCafe.provider('avatarInfo', [function () {
-  let username = 'Anonymous';
+  let username = '';
   let avatarUrl = '';
   const localStorageNameKey = 'username';
+  const localStorageAvatarUrlKey = 'avatarUrl';
 
   let buildRandomAvatar = function () {
     let url = 'http://api.adorable.io/avatars/face/';
@@ -136,6 +158,18 @@ chatCafe.provider('avatarInfo', [function () {
   };
 
   this.initializeAvatar = function () {
-    avatarUrl = buildRandomAvatar();
+    try {
+      avatarUrl = localStorage.getItem(localStorageAvatarUrlKey);
+    } catch (err) {
+      console.error(`Local storage is unavailable: ${err.message}`);
+    }
+    if (avatarUrl === '') {
+      avatarUrl = buildRandomAvatar();
+    }
+    try {
+      localStorage.setItem(localStorageAvatarUrlKey, avatarUrl); 
+    } catch (err) {
+      console.error(`Local storage is unavailable: ${err.message}`);
+    }
   };
 }]);
