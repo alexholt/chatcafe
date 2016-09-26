@@ -9,26 +9,41 @@ const FETCH_INTERVAL = 500;
 
 const httpConfig = { withCredentials: true };
 
-chatCafe.config(['avatarInfoProvider', function (avatarInfoProvider) {
+chatCafe.config(['$anchorScrollProvider', 'avatarInfoProvider', function ($anchorScrollProvider, avatarInfoProvider) {
+  $anchorScrollProvider.disableAutoScrolling();
   avatarInfoProvider.initializeName();
   avatarInfoProvider.initializeAvatar();
 }]);
 
-chatCafe.controller('historyCtrl', function ($scope, $http) {
+chatCafe.controller('historyCtrl', function ($scope, $http, $location, $anchorScroll) {
   $scope.messages = [];
 
   const fetchData = function () {
     $http.get(`${SERVER_URL}/chat`, httpConfig)
       .success(function (messages) {
+        let highestNewId = -Infinity;
         const messageIds = $scope.messages.reduce(function (acc, cur) {
           acc[cur.id] = true;
+          if (highestNewId < cur.id) {
+            highestNewId = cur.id;
+          }
           return acc;
         }, {});
+
+        let shouldScroll = false;
         for (let i = 0; i < messages.length; i++) {
           if (!messageIds[messages[i].id]) {
+            shouldScroll = true;
             $scope.messages.push(messages[i]);
           }
         }
+
+        if (shouldScroll) {
+          // setTimeout here to give angular a chance to actually add the message
+          // we are scrolling to
+          setTimeout(() => $anchorScroll(`message-${highestNewId}`), 0);
+        }
+
         setTimeout(fetchData, FETCH_INTERVAL);
       })
       .error(function (err) {

@@ -14,7 +14,7 @@
 
       <div class="message-list" ng-controller="historyCtrl">
         <ul>
-          <li class="row message-list__item" ng-repeat="message in messages | orderBy : 'timestamp' track by message.id">
+          <li class="row message-list__item" id="{{'message-' + message.id}}" ng-repeat="message in messages | orderBy : 'timestamp' track by message.id">
             <div class="col-xs-2 avatar">
               <img class="avatar__image" ng-src="{{message.avatarUrl}}">
             </div>
