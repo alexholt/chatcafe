@@ -96,7 +96,7 @@ module.exports = {
     collection.find({}).sort({id: -1}).limit(1).toArray(
       function (err, docs) {
         let id = 0;
-        if (err && !docs) {
+        if (err || !docs) {
           console.log(`Unable to find highest id: ${err.code} ${err.message}`);
         } else {
           id = docs[0];
