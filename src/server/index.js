@@ -37,8 +37,15 @@ const checkDB = function (req, res, next) {
 };
 
 app.use(bodyParser.json())
-app.use(allowCORS);
 app.use(checkDB);
+
+if (process.env.NODE_ENV === 'development') {
+  // It's nice to run the client and server separately for development so you
+  // can use the webpack-dev-server and nodemon for autoreloading of each one
+  // separately but for production the client will be delivered from the same
+  // domain
+  app.use(allowCORS);
+}
 
 app.use(session({
   secret: 'popsecret',
@@ -68,6 +75,7 @@ app.post('/chat', function (req, res) {
 });
 
 if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('public'));
   app.listen(80);
 } else {
   app.listen(8000, function () {

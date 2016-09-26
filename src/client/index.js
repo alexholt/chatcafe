@@ -15,7 +15,7 @@ chatCafe.config(['$anchorScrollProvider', 'avatarInfoProvider', function ($ancho
   avatarInfoProvider.initializeAvatar();
 }]);
 
-chatCafe.controller('historyCtrl', function ($scope, $http, $location, $anchorScroll) {
+chatCafe.controller('historyCtrl', ['$scope', '$http', '$anchorScroll', function ($scope, $http, $anchorScroll) {
   $scope.messages = [];
 
   const fetchData = function () {
@@ -53,9 +53,9 @@ chatCafe.controller('historyCtrl', function ($scope, $http, $location, $anchorSc
 
   setTimeout(fetchData, FETCH_INTERVAL);
 
-});
+}]);
 
-chatCafe.controller('messageCtrl', function ($scope, $http, avatarInfo) {
+chatCafe.controller('messageCtrl', ['$scope', '$http', 'avatarInfo', function ($scope, $http, avatarInfo) {
   $scope.master = {};
 
   $scope.update = function (message) {
@@ -85,15 +85,15 @@ chatCafe.controller('messageCtrl', function ($scope, $http, avatarInfo) {
   };
 
   $scope.reset();
-});
+}]);
 
-chatCafe.controller('avatarCtrl', function ($scope, avatarInfo) {
+chatCafe.controller('avatarCtrl', ['$scope', 'avatarInfo', function ($scope, avatarInfo) {
   $scope.master = {
     name: avatarInfo.getName(),
     avatarUrl: avatarInfo.getAvatarUrl(),
   };
 
-  if ($scope.master.name === '') {
+  if (!$scope.master.name) {
     $scope.avatarModifier = 'avatar--fullscreen';
   }
 
@@ -117,7 +117,7 @@ chatCafe.controller('avatarCtrl', function ($scope, avatarInfo) {
   };
 
   $scope.reset();
-});
+}]);
 
 chatCafe.provider('avatarInfo', [function () {
   let username = '';
@@ -178,7 +178,7 @@ chatCafe.provider('avatarInfo', [function () {
     } catch (err) {
       console.error(`Local storage is unavailable: ${err.message}`);
     }
-    if (avatarUrl === '') {
+    if (!avatarUrl) {
       avatarUrl = buildRandomAvatar();
     }
     try {
