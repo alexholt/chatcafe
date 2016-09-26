@@ -96,10 +96,12 @@ module.exports = {
     collection.find({}).sort({id: -1}).limit(1).toArray(
       function (err, docs) {
         let id = 0;
-        if (err || !docs) {
+        if (err) {
           console.log(`Unable to find highest id: ${err.code} ${err.message}`);
+        } else if (docs.length === 0) {
+          id = 0;
         } else {
-          id = docs[0];
+          id = docs[0].id;
         }
         cb(err, id >= Number.MAX_SAFE_INTEGER ? 0 : id);
       }
