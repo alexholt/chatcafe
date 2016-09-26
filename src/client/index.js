@@ -73,13 +73,6 @@ chatCafe.controller('messageCtrl', ['$scope', '$http', 'avatarInfo', function ($
       });
   };
 
-  $scope.keydown = function (message) {
-    console.log($event.keyCode);
-    if ($event.keyCode === 23) {
-      $scope.update(message); 
-    }
-  };
-
   $scope.reset = function () {
     $scope.message = angular.copy($scope.master);
   };
