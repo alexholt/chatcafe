@@ -2,6 +2,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const session = require('express-session');
 
+const MongoStore = require('connect-mongo')(session);
+
 const db = require('./db');
 
 const app = express();
@@ -17,6 +19,7 @@ db.connect(function () {
       highestId = id;
       isDbReady = true;
     }
+
   });
 });
 
@@ -39,6 +42,14 @@ const checkDB = function (req, res, next) {
 app.use(bodyParser.json())
 app.use(checkDB);
 
+app.use(session({
+  secret: 'popsecret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }, // Needs HTTPS for secure cookies
+  store: new MongoStore({ url: process.env.DB_URL })
+}));
+
 if (process.env.NODE_ENV === 'development') {
   // It's nice to run the client and server separately for development so you
   // can use the webpack-dev-server and nodemon for autoreloading of each one
@@ -46,13 +57,6 @@ if (process.env.NODE_ENV === 'development') {
   // domain
   app.use(allowCORS);
 }
-
-app.use(session({
-  secret: 'popsecret',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false } // Needs HTTPS for secure cookies
-}));
 
 app.get('/chat', function (req, res) {
   db.readMessages(function (messages) {
@@ -66,7 +70,7 @@ app.post('/chat', function (req, res) {
   message.id = ++highestId;
   db.writeMessage(message, function (err) {
     if (err) {
-      rest.status(503);
+      res.status(503);
     } else {
       res.status(200);
     }

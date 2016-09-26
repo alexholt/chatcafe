@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 
-const mongoUrl = 'mongodb://localhost:27017/chatcafe';
+const mongoUrl = process.env.DB_URL;
 const limit = 10;
 
 let database;
@@ -102,5 +102,9 @@ module.exports = {
         cb(err, doc.id >= Number.MAX_SAFE_INTEGER ? 0 : doc.id);
       }
     );
+  },
+
+  getDatabase: function () {
+    return database;
   },
 };
