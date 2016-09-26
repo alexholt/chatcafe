@@ -9,7 +9,8 @@
     "start-server": "CLIENT_URL=http://localhost:8080 DB_URL=mongodb://localhost:27017/chatcafe nodemon src/server/index.js",
     "start-mongo": "mongod --dbpath=/data",
     "seed-mongo": "node src/server/seed.js",
-    "run-prod": "NODE_ENV=production DB_URL=mongodb://localhost:27017/chatcafe nodemon src/server/index.js"
+    "run-prod": "NODE_ENV=production DB_URL=mongodb://localhost:27017/chatcafe nodemon src/server/index.js",
+    "redirect-ports": "iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8000"
   },
   "repository": {
     "type": "git",
