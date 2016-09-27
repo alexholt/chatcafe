@@ -5,16 +5,22 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 const db = require('./db');
+const dbName = 'messages';
 
 const app = express();
 
 let highestId = -1;
 let isDbReady = false;
 
-db.connect(function () {
+db.connect(dbName, function (err) {
+  if (err) {
+    console.error('Could not connect to the database');
+    process.exit();
+  }
   db.getHighestId(function (err, id) {
     if (err) {
       console.error('Unable to get the latest id');
+      process.exit();
     } else {
       highestId = id;
       isDbReady = true;
@@ -59,7 +65,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.get('/chat', function (req, res) {
-  db.readMessages(function (messages) {
+  db.readMessages(function (err, messages) {
     res.json(messages);
   });
 });

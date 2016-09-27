@@ -8,14 +8,13 @@ let collection;
 
 module.exports = {
 
-  connect: function (cb) {
+  connect: function (name, cb) {
     MongoClient.connect(mongoUrl, function(err, db) {
       if (err) {
-        console.error('Could not connect to the database');
-        process.exit();
+        return cb(err);
       }
       database = db; 
-      collection = db.collection('messages');
+      collection = db.collection(name);
       cb();
     });
   },
@@ -52,11 +51,9 @@ module.exports = {
     collection.find({}).sort({timestamp: -1}).limit(limit)
       .toArray(function (err, docs) {
         if (err) {
-          console.error(
-            `Could not read from the database: ${err.code} ${err.message}`
-          );
+          cb(err);
         } else {
-          cb(docs);
+          cb(null, docs);
         }
       });
   },
@@ -110,5 +107,11 @@ module.exports = {
 
   getDatabase: function () {
     return database;
+  },
+
+  dropCollection: function (cb) {
+    collection.drop(function (err) {
+      cb(err);  
+    });
   },
 };

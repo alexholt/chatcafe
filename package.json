@@ -10,7 +10,9 @@
     "start-mongo": "mongod --dbpath=/data",
     "seed-mongo": "node src/server/seed.js",
     "run-prod": "NODE_ENV=production DB_URL=mongodb://localhost:27017/chatcafe nodemon src/server/index.js",
-    "redirect-ports": "iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8000"
+    "redirect-ports": "iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8000",
+    "test": "DB_URL=mongodb://localhost:27017/chatcafe mocha --reporter spec",
+    "test-watch": "DB_URL=mongodb://localhost:27017/chatcafe mocha --reporter spec --watch"
   },
   "repository": {
     "type": "git",
@@ -29,6 +31,7 @@
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-stage-0": "^6.5.0",
     "body-parser": "^1.15.2",
+    "chai": "^3.5.0",
     "connect-mongo": "^1.3.2",
     "css-loader": "^0.25.0",
     "ejs": "^2.5.2",
@@ -37,6 +40,7 @@
     "express-session": "^1.14.1",
     "html-loader": "^0.4.4",
     "html-webpack-plugin": "^2.22.0",
+    "mocha": "^3.0.2",
     "mongodb": "^2.2.10",
     "node-sass": "^3.10.0",
     "normalize.css": "^4.2.0",
